@@ -1,6 +1,6 @@
-# Birthday Book v2
+# Memory Album
 
-Next.js (app router) + Prismic CMS + Tailwind v4 (Next defaults) with a mobile-first birthday dashboard.
+Next.js (app router) + Prismic CMS + Tailwind v4 (Next defaults) with a mobile-first album/memories dashboard.
 
 ## Local dev
 ```bash
@@ -13,8 +13,8 @@ npm run dev
 
 ## Prismic custom types
 Custom type JSON lives in `customtypes/`.
-- `birthday` — name, relation, date, gift idea, about, photo, tags
-- `moment` — timeline entries linked to a birthday
+- `birthday` — name, relation, date, gift idea, about, photo, tags (use for birthdays/anniversaries/etc.)
+- `moment` — timeline entries linked to a birthday (or occasion)
 
 Push types to your Prismic repo (run inside this project):
 ```bash

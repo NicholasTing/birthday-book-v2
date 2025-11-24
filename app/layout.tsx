@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Birthday Book",
+  title: "Memory Album",
   description:
-    "Beautifully track the people you love with mobile-first reminders and stories.",
+    "Create albums for birthdays, get well, celebrations, and more—each filled with shared memories.",
 };
 
 export default function RootLayout({

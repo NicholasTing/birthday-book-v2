@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #05060a;
-  --card: rgba(255, 255, 255, 0.04);
-  --border: rgba(255, 255, 255, 0.08);
-  --text: #f5f7fb;
-  --muted: #b6bed6;
-  --accent: #f2c94c;
-  --accent-2: #7c5dfa;
+  --bg: #f7f8fb;
+  --card: #ffffff;
+  --border: #e3e8f2;
+  --text: #14213d;
+  --muted: #5f6b7a;
+  --accent: #ffb347;
+  --accent-2: #2a9d8f;
 }
 
 @theme inline {
@@ -18,17 +18,17 @@
 }
 
 body {
-  background: radial-gradient(circle at 20% 20%, #0c1220 0%, #05060a 45%),
-    radial-gradient(circle at 80% 0%, #12182a 0%, transparent 35%),
-    #05060a;
+  background: radial-gradient(circle at 20% 20%, rgba(255, 179, 71, 0.28), transparent 32%),
+    radial-gradient(circle at 80% 5%, rgba(42, 157, 143, 0.22), transparent 30%),
+    var(--bg);
   color: var(--text);
 }
 
 .glass {
   background: var(--card);
   border: 1px solid var(--border);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(16px);
+  box-shadow: 0 18px 38px rgba(20, 33, 61, 0.08);
+  backdrop-filter: blur(8px);
 }
 
 .gradient-border {
@@ -41,10 +41,25 @@ body {
   inset: 0;
   padding: 1px;
   border-radius: 18px;
-  background: linear-gradient(120deg, #7c5dfa, #f2c94c, #7c5dfa);
+  background: linear-gradient(120deg, #ffb347, #2a9d8f, #ffb347);
   -webkit-mask: linear-gradient(#000, #000) content-box,
     linear-gradient(#000, #000);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: inline-block;
+  min-width: 200%;
+  animation: marquee 28s linear infinite;
 }

@@ -1,0 +1,34 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model cards {
+  id             String     @id @default(uuid())
+  recipient      String
+  code           String     @unique
+  created_at     DateTime   @default(now())
+  occasion       String
+  custom_message String?
+  card_senders   messages[]
+}
+
+model messages {
+  id         String   @id @default(uuid())
+  card_id    String
+  card       cards    @relation(fields: [card_id], references: [id], onDelete: Cascade)
+  author     String
+  message    String   @db.Text
+  gif        String?
+  created_at DateTime @default(now())
+}
