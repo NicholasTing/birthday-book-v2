@@ -31,7 +31,7 @@ export async function GET(
       custom_message: card.custom_message,
       created_at: card.created_at,
     },
-    messages: card.card_senders.map((m) => ({
+    messages: card.card_senders.map((m: any) => ({
       id: m.id,
       author: m.author,
       message: m.message,

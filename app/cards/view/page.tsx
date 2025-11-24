@@ -131,7 +131,7 @@ export default async function ViewCardPage({ searchParams }: Props) {
             {card.card_senders.length === 0 ? (
               <p className="text-sm text-[var(--muted)]">No messages yet.</p>
             ) : (
-              card.card_senders.map((m) => (
+              card.card_senders.map((m: any) => (
                 <article
                   key={m.id}
                   className="rounded-xl border border-[var(--border)] bg-[#f7f9fd] p-4"
