@@ -1,0 +1,70 @@
+{
+  "id": "birthday",
+  "label": "Birthday",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "uid": {
+        "type": "UID",
+        "config": {
+          "label": "Slug"
+        }
+      },
+      "name": {
+        "type": "Text",
+        "config": {
+          "label": "Name",
+          "placeholder": "Ava Thompson"
+        }
+      },
+      "relation": {
+        "type": "Text",
+        "config": {
+          "label": "Relation",
+          "placeholder": "Sister, friend, teammate"
+        }
+      },
+      "date": {
+        "type": "Date",
+        "config": {
+          "label": "Birthday"
+        }
+      },
+      "gift_idea": {
+        "type": "Text",
+        "config": {
+          "label": "Gift idea",
+          "placeholder": "Brunch + photo album"
+        }
+      },
+      "about": {
+        "type": "StructuredText",
+        "config": {
+          "label": "About",
+          "multi": "paragraph, strong, em, hyperlink, list-item, o-list-item"
+        }
+      },
+      "photo": {
+        "type": "Image",
+        "config": {
+          "label": "Photo",
+          "thumbnails": []
+        }
+      },
+      "tags": {
+        "type": "Select",
+        "config": {
+          "label": "Tags",
+          "options": [
+            "family",
+            "friends",
+            "team",
+            "vip"
+          ],
+          "default_value": "friends"
+        }
+      }
+    }
+  }
+}
