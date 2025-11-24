@@ -3,6 +3,7 @@ export const runtime = "nodejs";
 
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import type { cards, messages } from "@prisma/client";
 
 type Props = {
   searchParams: Promise<{ code?: string }>;
@@ -13,18 +14,16 @@ export default async function ViewCardPage({ searchParams }: Props) {
   const rawCode = typeof params?.code === "string" ? params.code : "";
   const code = rawCode.trim();
 
-  let card: Awaited<
-    ReturnType<typeof prisma.cards.findUnique>
-  > | null = null;
+  let card: (cards & { card_senders: messages[] }) | null = null;
 
   if (code) {
     try {
-      card = await prisma.cards.findUnique({
+      card = (await prisma.cards.findUnique({
         where: { code },
         include: {
           card_senders: { orderBy: { created_at: "desc" } },
         },
-      });
+      })) as (cards & { card_senders: messages[] }) | null;
     } catch (err) {
       console.error("Failed to load card", err);
       card = null;

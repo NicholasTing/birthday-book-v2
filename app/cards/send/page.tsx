@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
@@ -11,6 +11,20 @@ type GifResult = {
 };
 
 export default function SendMessagePage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="mx-auto flex min-h-screen max-w-4xl flex-col gap-6 px-4 py-10 sm:px-6 lg:px-10">
+          <p className="text-sm text-[var(--muted)]">Loading...</p>
+        </main>
+      }
+    >
+      <SendMessageContent />
+    </Suspense>
+  );
+}
+
+function SendMessageContent() {
   const searchParams = useSearchParams();
   const codeParam = searchParams?.get("code") ?? "";
   const [author, setAuthor] = useState("");

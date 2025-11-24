@@ -8,6 +8,8 @@
   --muted: #5f6b7a;
   --accent: #ffb347;
   --accent-2: #2a9d8f;
+  --font-geist-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-geist-mono: "Menlo", ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
 }
 
 @theme inline {

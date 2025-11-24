@@ -2,11 +2,20 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { CodeActions } from "@/components/CodeActions";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
-  const [totalCards, totalMessages] = await prisma.$transaction([
-    prisma.cards.count(),
-    prisma.messages.count(),
-  ]);
+  let totalCards = 0;
+  let totalMessages = 0;
+  try {
+    const counts = await prisma.$transaction([
+      prisma.cards.count(),
+      prisma.messages.count(),
+    ]);
+    [totalCards, totalMessages] = counts;
+  } catch (err) {
+    console.error("Failed to load stats", err);
+  }
   const supporters = [
     "pinkfairy",
     "ChewyTofu",

@@ -1,6 +1,5 @@
 import * as prismic from "@prismicio/client";
 import { enableAutoPreviews } from "@prismicio/next";
-import type { NextRequestLike } from "@prismicio/next";
 
 export const repositoryName =
   process.env.NEXT_PUBLIC_PRISMIC_REPO || "your-repo-name";
@@ -21,8 +20,8 @@ export function createClient(config: prismic.ClientConfig = {}) {
  * Enable previews for server components. Call inside layouts/routes where needed:
  *   export const { getStaticProps } = createPrismicPreviews();
  */
-export function enablePrismicPreviews(request?: NextRequestLike) {
+export function enablePrismicPreviews(request?: unknown) {
   const client = createClient();
-  enableAutoPreviews({ client, previewData: request });
+  enableAutoPreviews({ client });
   return client;
 }

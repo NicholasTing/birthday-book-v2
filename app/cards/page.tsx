@@ -1,10 +1,17 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export default async function CardsIndexPage() {
-  const cards = await prisma.cards.findMany({
-    orderBy: { created_at: "desc" },
-  });
+  let cards: Awaited<ReturnType<typeof prisma.cards.findMany>> = [];
+  try {
+    cards = await prisma.cards.findMany({
+      orderBy: { created_at: "desc" },
+    });
+  } catch (err) {
+    console.error("Failed to load cards", err);
+  }
 
   return (
     <main className="mx-auto flex min-h-screen max-w-5xl flex-col gap-6 px-4 py-10 sm:px-6 lg:px-10">
