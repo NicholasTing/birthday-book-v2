@@ -35,11 +35,11 @@ model messages {
 }
 
 model albums {
-  id            String        @id @default(uuid())
-  code          String        @unique
+  id            String   @id @default(uuid())
+  code          String   @unique   // easy-to-remember code
   name          String
   passcode_hash String
-  created_at    DateTime      @default(now())
+  created_at    DateTime @default(now())
   cards         album_cards[]
 }
 
@@ -47,11 +47,10 @@ model album_cards {
   id         String   @id @default(uuid())
   album_id   String
   card_id    String
-  year_label Int?
   added_at   DateTime @default(now())
 
-  album albums @relation(fields: [album_id], references: [id], onDelete: Cascade)
-  card  cards  @relation(fields: [card_id], references: [id], onDelete: Cascade)
+  album albums @relation(fields: [album_id], references: [id]) // no cascade
+  card  cards  @relation(fields: [card_id], references: [id]) // no cascade
 
   @@unique([album_id, card_id])
 }

@@ -6,10 +6,11 @@ import { randomBytes } from "crypto";
 type Body = {
   name?: string;
   passcode?: string;
+  code?: string;
 };
 
 function generateCode() {
-  return randomBytes(4).toString("hex").slice(0, 6);
+  return randomBytes(4).toString("hex").slice(0, 6).toUpperCase();
 }
 
 export async function POST(req: Request) {
@@ -22,6 +23,7 @@ export async function POST(req: Request) {
 
   const name = payload.name?.trim();
   const passcode = payload.passcode?.trim();
+  const requestedCode = payload.code?.trim();
 
   if (!name) {
     return NextResponse.json({ error: "Name is required" }, { status: 400 });
@@ -32,10 +34,16 @@ export async function POST(req: Request) {
 
   const passcode_hash = await bcrypt.hash(passcode, 10);
 
-  let code = generateCode();
+  let code = requestedCode?.toUpperCase() || generateCode();
   for (let i = 0; i < 5; i++) {
     const exists = await prisma.albums.findUnique({ where: { code } });
     if (!exists) break;
+    if (requestedCode) {
+      return NextResponse.json(
+        { error: "Album code already taken. Choose another." },
+        { status: 409 },
+      );
+    }
     code = generateCode();
   }
 

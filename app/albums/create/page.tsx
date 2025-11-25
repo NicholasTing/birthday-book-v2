@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 type Status = { type: "success" | "error"; text: string };
@@ -9,21 +9,23 @@ type Status = { type: "success" | "error"; text: string };
 function AlbumCreateContent() {
   const params = useSearchParams();
   const prefillCard = params?.get("code") ?? "";
+  const router = useRouter();
 
   const [name, setName] = useState("");
   const [passcode, setPasscode] = useState("");
+  const [albumCode, setAlbumCode] = useState("");
   const [cardCode, setCardCode] = useState(prefillCard);
-  const [year, setYear] = useState<string>("");
   const [status, setStatus] = useState<Status | null>(null);
   const [albumId, setAlbumId] = useState<string | null>(null);
+  const [generatedCode, setGeneratedCode] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus(null);
     setAlbumId(null);
-    if (!name.trim() || !passcode.trim()) {
-      setStatus({ type: "error", text: "Name and passcode are required." });
+    if (!name.trim() || !passcode.trim() || !cardCode.trim()) {
+      setStatus({ type: "error", text: "Name, passcode, and card code are required." });
       return;
     }
     setLoading(true);
@@ -32,15 +34,21 @@ function AlbumCreateContent() {
       const res = await fetch("/api/albums/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), passcode: passcode.trim() }),
+        body: JSON.stringify({
+          name: name.trim(),
+          passcode: passcode.trim(),
+          code: albumCode.trim() || undefined,
+        }),
       });
       const body = await res.json();
       if (!res.ok) throw new Error(body?.error || "Failed to create album");
       const createdId = body.album?.id as string | undefined;
+      const createdCode = body.album?.code as string | undefined;
       setAlbumId(createdId ?? null);
+      setGeneratedCode(createdCode ?? null);
 
-      // Optionally attach a card
-      if (createdId && cardCode.trim()) {
+      // Attach a card (required)
+      if (createdId) {
         const addRes = await fetch("/api/albums/add-card", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -48,7 +56,6 @@ function AlbumCreateContent() {
             albumId: createdId,
             passcode: passcode.trim(),
             cardCode: cardCode.trim(),
-            year: year ? Number(year) : undefined,
           }),
         });
         const addBody = await addRes.json();
@@ -61,6 +68,9 @@ function AlbumCreateContent() {
           ? "Album created! Share the passcode to manage it."
           : "Album created.",
       });
+      if (createdCode) {
+        router.push(`/albums/view?code=${encodeURIComponent(createdCode)}`);
+      }
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Failed to create album";
       setStatus({ type: "error", text: msg });
@@ -123,23 +133,26 @@ function AlbumCreateContent() {
 
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="flex flex-col gap-2 text-sm font-medium text-[var(--text)]">
-            Card code (optional)
+            Card code (required)
             <input
               value={cardCode}
               onChange={(e) => setCardCode(e.target.value)}
               placeholder="ABC-123"
               className="rounded-xl border border-[var(--border)] bg-[#f7f9fd] px-3 py-3 text-[var(--text)] outline-none ring-2 ring-transparent transition focus:ring-[var(--accent)]"
+              required
             />
           </label>
           <label className="flex flex-col gap-2 text-sm font-medium text-[var(--text)]">
-            Year label (optional)
+            Album code (optional)
             <input
-              value={year}
-              onChange={(e) => setYear(e.target.value)}
-              placeholder="2025"
+              value={albumCode}
+              onChange={(e) => setAlbumCode(e.target.value)}
+              placeholder="Leave blank to auto-generate"
               className="rounded-xl border border-[var(--border)] bg-[#f7f9fd] px-3 py-3 text-[var(--text)] outline-none ring-2 ring-transparent transition focus:ring-[var(--accent)]"
-              inputMode="numeric"
             />
+            <span className="text-xs text-[var(--muted)]">
+              Codes are case sensitive. If taken, we’ll auto-generate another.
+            </span>
           </label>
         </div>
 
@@ -152,29 +165,9 @@ function AlbumCreateContent() {
             }`}
           >
             {status.text}{" "}
-            {status.type === "success" && albumId ? `Album ID: ${albumId}` : null}
-          </div>
-        ) : null}
-
-        {albumId ? (
-          <div className="rounded-[12px] border border-[var(--border)] bg-white/70 px-4 py-3 text-sm text-[var(--text)]">
-            Manage album:
-            <div className="mt-2 flex gap-2">
-              <Link
-                href={`/api/albums/${albumId}/cards`}
-                className="rounded-[10px] border border-[var(--border)] px-3 py-2 text-xs font-semibold hover:border-[var(--accent-2)]"
-              >
-                API view
-              </Link>
-              {cardCode ? (
-                <Link
-                  href={`/cards/view?code=${encodeURIComponent(cardCode)}`}
-                  className="rounded-[10px] border border-[var(--border)] px-3 py-2 text-xs font-semibold hover:border-[var(--accent-2)]"
-                >
-                  View card
-                </Link>
-              ) : null}
-            </div>
+            {status.type === "success" && (generatedCode || albumId)
+              ? `Code: ${generatedCode ?? albumId}`
+              : null}
           </div>
         ) : null}
 

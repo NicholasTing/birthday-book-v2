@@ -20,7 +20,6 @@ export async function POST(req: Request) {
   const albumId = payload.albumId?.trim();
   const passcode = payload.passcode?.trim();
   const cardCode = payload.cardCode?.trim();
-  const year = payload.year ?? null;
 
   if (!albumId || !passcode || !cardCode) {
     return NextResponse.json({ error: "albumId, passcode, and cardCode are required" }, { status: 400 });
@@ -33,7 +32,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Album not found" }, { status: 404 });
   }
 
-  const valid = await bcrypt.compare(passcode, album.passcode_hash);
+  if (!album.passcode_hash) {
+    return NextResponse.json({ error: "Invalid passcode" }, { status: 401 });
+  }
+  let valid = false;
+  try {
+    valid = await bcrypt.compare(passcode, album.passcode_hash);
+  } catch {
+    valid = false;
+  }
   if (!valid) {
     return NextResponse.json({ error: "Invalid passcode" }, { status: 401 });
   }
@@ -45,7 +52,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Card not found" }, { status: 404 });
   }
 
-  const link = await prisma.album_cards.upsert({
+  await prisma.album_cards.upsert({
     where: {
       album_id_card_id: {
         album_id: album.id,
@@ -53,12 +60,11 @@ export async function POST(req: Request) {
       },
     },
     update: {
-      year_label: year ?? undefined,
+      // year removed
     },
     create: {
       album_id: album.id,
       card_id: card.id,
-      year_label: year,
     },
     include: {
       card: true,
@@ -70,7 +76,7 @@ export async function POST(req: Request) {
       added: {
         albumId: album.id,
         cardCode: card.code,
-        year: link.year_label,
+        year: null,
       },
     },
     { status: 201 },
