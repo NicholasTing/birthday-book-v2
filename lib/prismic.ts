@@ -20,7 +20,7 @@ export function createClient(config: prismic.ClientConfig = {}) {
  * Enable previews for server components. Call inside layouts/routes where needed:
  *   export const { getStaticProps } = createPrismicPreviews();
  */
-export function enablePrismicPreviews(request?: unknown) {
+export function enablePrismicPreviews() {
   const client = createClient();
   enableAutoPreviews({ client });
   return client;

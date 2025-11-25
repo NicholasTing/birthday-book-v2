@@ -65,6 +65,18 @@ export default async function Home() {
             >
               Create card
             </Link>
+            <Link
+              className="rounded-full border border-[var(--border)] px-3 py-2 hover:border-[var(--accent-2)]"
+              href="/albums/create"
+            >
+              Create album
+            </Link>
+            <Link
+              className="rounded-full border border-[var(--border)] px-3 py-2 hover:border-[var(--accent-2)]"
+              href="/albums/view"
+            >
+              View album
+            </Link>
           </div>
         </nav>
 

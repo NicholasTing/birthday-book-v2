@@ -41,6 +41,14 @@ export default async function ViewCardPage({ searchParams }: Props) {
         >
           ← Back to home
         </Link>
+        {code ? (
+          <Link
+            href={`/albums/create?code=${encodeURIComponent(code)}`}
+            className="rounded-full border border-[var(--border)] px-3 py-2 hover:border-[var(--accent-2)]"
+          >
+            Create album with this card
+          </Link>
+        ) : null}
         {!card ? null : (
           <Link
             href="/cards/view"

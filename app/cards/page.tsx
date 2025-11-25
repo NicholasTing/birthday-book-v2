@@ -36,7 +36,7 @@ export default async function CardsIndexPage() {
         </div>
       ) : (
         <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {cards.map((card) => (
+          {cards.map((card: any) => (
             <article
               key={card.id}
               className="glass rounded-[18px] border border-[var(--border)] p-5"

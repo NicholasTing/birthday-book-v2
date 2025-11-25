@@ -14,13 +14,14 @@ datasource db {
 }
 
 model cards {
-  id             String     @id @default(uuid())
+  id             String        @id @default(uuid())
   recipient      String
-  code           String     @unique
-  created_at     DateTime   @default(now())
+  code           String        @unique
+  created_at     DateTime      @default(now())
   occasion       String
   custom_message String?
   card_senders   messages[]
+  albumCards     album_cards[]
 }
 
 model messages {
@@ -31,4 +32,26 @@ model messages {
   message    String   @db.Text
   gif        String?
   created_at DateTime @default(now())
+}
+
+model albums {
+  id            String        @id @default(uuid())
+  code          String        @unique
+  name          String
+  passcode_hash String
+  created_at    DateTime      @default(now())
+  cards         album_cards[]
+}
+
+model album_cards {
+  id         String   @id @default(uuid())
+  album_id   String
+  card_id    String
+  year_label Int?
+  added_at   DateTime @default(now())
+
+  album albums @relation(fields: [album_id], references: [id], onDelete: Cascade)
+  card  cards  @relation(fields: [card_id], references: [id], onDelete: Cascade)
+
+  @@unique([album_id, card_id])
 }
