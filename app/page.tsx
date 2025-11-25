@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { CodeActions } from "@/components/CodeActions";
+import { NavBar } from "@/components/NavBar";
 
 export const dynamic = "force-dynamic";
 
@@ -35,50 +35,7 @@ export default async function Home() {
       </div>
 
       <main className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-10 sm:px-6 lg:px-12">
-        <nav className="flex flex-col gap-3 rounded-[18px] border border-[var(--border)] bg-white/70 p-4 shadow-sm backdrop-blur sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <span className="h-8 w-8 rounded-full bg-[var(--accent-2)]" />
-              <div>
-                <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">
-                  Memory Album
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-wrap items-center gap-3 text-sm font-semibold text-[var(--text)]">
-            <Link
-              className="rounded-full border border-[var(--border)] px-3 py-2 hover:border-[var(--accent-2)]"
-              href="/"
-            >
-              Home
-            </Link>
-            <Link
-              className="rounded-full border border-[var(--border)] px-3 py-2 hover:border-[var(--accent-2)]"
-              href="/cards/view"
-            >
-              View card
-            </Link>
-            <Link
-              className="rounded-full border border-[var(--border)] px-3 py-2 hover:border-[var(--accent-2)]"
-              href="/cards/new"
-            >
-              Create card
-            </Link>
-            <Link
-              className="rounded-full border border-[var(--border)] px-3 py-2 hover:border-[var(--accent-2)]"
-              href="/albums/create"
-            >
-              Create album
-            </Link>
-            <Link
-              className="rounded-full border border-[var(--border)] px-3 py-2 hover:border-[var(--accent-2)]"
-              href="/albums/view"
-            >
-              View album
-            </Link>
-          </div>
-        </nav>
+        <NavBar />
 
         <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
