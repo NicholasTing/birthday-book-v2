@@ -200,16 +200,22 @@ export default function ViewAlbumPage() {
               />
             </label>
           </div>
-          {status ? (
-            <div className="rounded-[12px] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
-              {status}
-            </div>
-          ) : null}
-          <button
-            type="submit"
-            className="w-full rounded-[14px] bg-[var(--accent-2)] px-4 py-3 text-sm font-semibold text-white transition hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] active:translate-y-[1px]"
-            disabled={loading}
-          >
+        {status ? (
+          <div className="rounded-[12px] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+            {status}
+          </div>
+        ) : null}
+        {loading ? (
+          <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
+            <span className="spinner" />
+            Loading album...
+          </div>
+        ) : null}
+        <button
+          type="submit"
+          className="w-full rounded-[14px] bg-[var(--accent-2)] px-4 py-3 text-sm font-semibold text-white transition hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] active:translate-y-[1px]"
+          disabled={loading}
+        >
             {loading ? "Loading..." : "View album"}
           </button>
         </form>

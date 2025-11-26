@@ -80,6 +80,14 @@ export function CodeActions({ layout = "grid" }: Props) {
           {sendError ? (
             <p className="text-xs text-red-600">{sendError}</p>
           ) : null}
+          <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
+            {checking === "send" ? (
+              <>
+                <span className="spinner" />
+                Checking card...
+              </>
+            ) : null}
+          </div>
           <button
             type="submit"
             className="mt-auto w-full rounded-[14px] bg-[var(--accent-2)] px-4 py-3 text-sm font-semibold text-white transition hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] active:translate-y-[1px]"
@@ -112,6 +120,14 @@ export function CodeActions({ layout = "grid" }: Props) {
           {viewError ? (
             <p className="text-xs text-red-600">{viewError}</p>
           ) : null}
+          <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
+            {checking === "view" ? (
+              <>
+                <span className="spinner" />
+                Checking card...
+              </>
+            ) : null}
+          </div>
           <button
             type="submit"
             className="mt-auto w-full rounded-[14px] bg-[var(--accent-2)] px-4 py-3 text-sm font-semibold text-white transition hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] active:translate-y-[1px]"
